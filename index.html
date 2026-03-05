@@ -594,7 +594,7 @@
           <i class="fab fa-apple" style="color:var(--primary-lt);"></i>
           &nbsp;التثبيت على iPhone / iPad
         </p>
-        <p class="i-card-sub">باستخدام تطبيق UserScripts المجاني مع متصفح Safari</p>
+        <p class="i-card-sub">تطبيق UserScripts المجاني + Safari — بدون أي متصفح آخر</p>
 
         <ul class="steps">
           <li class="step">
@@ -602,7 +602,7 @@
             <div class="step-body">
               <div class="step-title">حمّل تطبيق <strong>UserScripts</strong> من App Store</div>
               <div class="step-desc">
-                مجاني ومفتوح المصدر — يضيف دعم السكريبتات مباشرةً لمتصفح Safari
+                مجاني تماماً ومفتوح المصدر — يعمل كإضافة مباشرة لمتصفح Safari الاعتيادي
               </div>
               <a href="https://apps.apple.com/us/app/userscripts/id1463298887" target="_blank" rel="noopener" class="step-link">
                 <i class="fas fa-arrow-up-right-from-square"></i>
@@ -614,10 +614,12 @@
           <li class="step">
             <div class="step-n">٢</div>
             <div class="step-body">
-              <div class="step-title">فعّل الإضافة في إعدادات Safari</div>
+              <div class="step-title">حدد مجلد iCloud لتخزين السكريبتات</div>
               <div class="step-desc">
-                الإعدادات → Safari → الإضافات (Extensions)<br>
-                فعّل <strong>UserScripts</strong> ← اضغط عليه ← اختر <strong>"السماح لجميع المواقع"</strong>
+                افتح تطبيق <strong>UserScripts</strong> → اضغط <strong>"Grant Access"</strong> عند الطلب →
+                اختر <strong>iCloud Drive</strong> → أنشئ مجلداً باسم <strong>UserScripts</strong> أو اختر أي مجلد →
+                اضغط <strong>"Open"</strong><br>
+                <span style="color:var(--warn);font-size:.82rem;">⚠ iCloud يجب أن يكون مفعّلاً على الجهاز</span>
               </div>
             </div>
           </li>
@@ -625,9 +627,10 @@
           <li class="step">
             <div class="step-n">٣</div>
             <div class="step-body">
-              <div class="step-title">افتح التطبيق وحدد مجلد الحفظ</div>
+              <div class="step-title">فعّل الإضافة في إعدادات Safari</div>
               <div class="step-desc">
-                في المرة الأولى سيطلب منك اختيار مجلد لتخزين السكريبتات — اختر أي مجلد في iCloud أو الذاكرة المحلية
+                <strong>الإعدادات</strong> → <strong>التطبيقات</strong> → <strong>Safari</strong> → <strong>الإضافات</strong><br>
+                فعّل <strong>UserScripts</strong> ← اضغط عليه ← غيّر الإذن إلى <strong>"السماح لجميع المواقع"</strong>
               </div>
             </div>
           </li>
@@ -635,9 +638,9 @@
           <li class="step">
             <div class="step-n">٤</div>
             <div class="step-body">
-              <div class="step-title">اضغط زر التثبيت أدناه في Safari</div>
+              <div class="step-title">اضغط زر التحميل أدناه</div>
               <div class="step-desc">
-                سيفتح Safari على صفحة التأكيد من UserScripts — اضغط <strong>"Install"</strong> ثم <strong>"Done"</strong>
+                سيقوم Safari بتحميل الملف وحفظه في <strong>الملفات ← التنزيلات</strong> تلقائياً
               </div>
             </div>
           </li>
@@ -645,32 +648,39 @@
           <li class="step">
             <div class="step-n">٥</div>
             <div class="step-body">
-              <div class="step-title">افتح wardyati.com وابدأ</div>
+              <div class="step-title">انقل الملف إلى مجلد UserScripts في iCloud</div>
               <div class="step-desc">
-                ستجد أزرار القنص تظهر تلقائياً بجانب كل وردية — أنت جاهز!
+                افتح تطبيق <strong>الملفات</strong> → ابحث في <strong>التنزيلات</strong> عن الملف<br>
+                اضغط مطولاً على الملف → <strong>نقل</strong> → <strong>iCloud Drive</strong> → المجلد الذي اخترته في الخطوة ٢
+              </div>
+            </div>
+          </li>
+
+          <li class="step">
+            <div class="step-n">٦</div>
+            <div class="step-body">
+              <div class="step-title">افتح wardyati.com في Safari وابدأ</div>
+              <div class="step-desc">
+                ستجد أزرار القنص تظهر تلقائياً بجانب كل وردية —
+                يمكنك التحقق من تفعيل السكريبت بالضغط على أيقونة UserScripts في شريط Safari
               </div>
             </div>
           </li>
         </ul>
 
         <div class="install-action">
-          <a href="#" class="i-btn install-link" id="ios-install">
+          <button class="i-btn" id="ios-dl-btn" onclick="downloadScriptIOS()">
             <i class="fas fa-download"></i>
-            تثبيت وردياتي سنايبر
-          </a>
-          <div class="copy-link-row" style="margin-top:14px;">
-            <span class="copy-link-text" id="ios-url-text">…</span>
-            <button class="copy-btn" onclick="copyInstallLink('ios-url-text')">
-              <i class="fas fa-copy"></i> نسخ الرابط
-            </button>
-          </div>
+            تحميل السكريبت
+          </button>
         </div>
 
-        <div class="i-note">
+        <div class="i-note" style="margin-top:18px;">
           <i class="fas fa-circle-info"></i>
           <span>
-            إذا لم يعمل زر التثبيت مباشرةً، افتح تطبيق <strong>UserScripts</strong>،
-            اضغط على <strong>+</strong>، اختر <strong>"URL"</strong> ثم الصق الرابط المنسوخ أعلاه.
+            الزر يحمّل الملف مباشرةً إلى <strong>الملفات ← التنزيلات</strong> في Safari —
+            لن يُفتح كنص. إذا سألك Safari عن مكان الحفظ اختر <strong>"iCloud Drive"</strong>
+            ثم انقله يدوياً إلى مجلد UserScripts.
           </span>
         </div>
       </div>
@@ -898,10 +908,35 @@
 
   const AUTH_API  = 'https://script.google.com/macros/s/AKfycbxe1Fs_Qc-bZGya1ZWVBw4XKCgSPbOTcFAzbKhlQDl4-KanhlO29EERcX_X9dqCESwp/exec';
 
-  /* ── SET INSTALL LINKS ─────────────────────────────────────────── */
+  /* ── SET INSTALL LINKS (Android + Desktop) ───────────────────── */
   document.querySelectorAll('.install-link').forEach(el => el.href = SCRIPT_URL);
-  const iosUrlText = document.getElementById('ios-url-text');
-  if (iosUrlText) iosUrlText.textContent = SCRIPT_URL;
+
+  /* ── iOS DOWNLOAD — forces Safari to save file instead of showing text ── */
+  async function downloadScriptIOS() {
+    const btn = document.getElementById('ios-dl-btn');
+    const origHTML = btn.innerHTML;
+    btn.disabled = true;
+    btn.innerHTML = '<span class="spin"></span> جارٍ التحميل…';
+    try {
+      const res = await fetch(SCRIPT_URL);
+      if (!res.ok) throw new Error('fetch failed');
+      const text = await res.text();
+      const blob = new Blob([text], { type: 'application/octet-stream' });
+      const url  = URL.createObjectURL(blob);
+      const a    = document.createElement('a');
+      a.href     = url;
+      a.download = 'wardyati-sniper.user.js';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      setTimeout(() => URL.revokeObjectURL(url), 2000);
+      btn.innerHTML = '<i class="fas fa-check"></i> تم التحميل!';
+      setTimeout(() => { btn.innerHTML = origHTML; btn.disabled = false; }, 3500);
+    } catch (e) {
+      btn.innerHTML = '<i class="fas fa-triangle-exclamation"></i> فشل التحميل — حاول مجدداً';
+      setTimeout(() => { btn.innerHTML = origHTML; btn.disabled = false; }, 3000);
+    }
+  }
 
   /* ── TABS ──────────────────────────────────────────────────────── */
   document.querySelectorAll('.tab-btn').forEach(btn => {
