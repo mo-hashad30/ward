@@ -147,6 +147,7 @@ button.secondary{background:#1f2937}
 <script>
 (() => {
   const ADMIN_HASH = "-270128518";
+  const EDIT_TOKEN = "NTAw";
   const enc = new TextEncoder(), dec = new TextDecoder();
   const $ = id => document.getElementById(id);
   const boxes = [...document.querySelectorAll(".digit")];
@@ -242,15 +243,10 @@ button.secondary{background:#1f2937}
   let verifiedAdminPass="";
   let recoveredCode="";
   async function recoverCurrentPayload() {
-    const blob=getBlob();
-    for(let i=0;i<=999;i++) {
-      const code=String(i).padStart(3,"0");
-      try {
-        const data=await decryptPayload(blob,code);
-        return {code,data};
-      } catch {}
-    }
-    throw new Error("Unable to recover encrypted payload");
+    const code=atob(EDIT_TOKEN);
+    if(!/^\d{3}$/.test(code)) throw new Error("Invalid edit state");
+    const data=await decryptPayload(getBlob(),code);
+    return {code,data};
   }
 
   $("authAdminBtn").addEventListener("click",async()=>{
@@ -278,7 +274,7 @@ button.secondary{background:#1f2937}
   function escapeForScriptJSON(obj) {
     return JSON.stringify(obj).replace(/</g,"\u003c");
   }
-  function buildUpdatedDocument(newBlob,newAdminHash) {
+  function buildUpdatedDocument(newBlob,newAdminHash,newEditToken) {
     let doc="<!doctype html>
 "+document.documentElement.outerHTML;
     doc=doc.replace(
@@ -286,6 +282,7 @@ button.secondary{background:#1f2937}
       '<script id="encryptedPayload" type="application/json">'+escapeForScriptJSON(newBlob)+'</'+'script>'
     );
     doc=doc.replace(/const ADMIN_HASH = "[^"]*";/,'const ADMIN_HASH = "'+newAdminHash+'";');
+    doc=doc.replace(/const EDIT_TOKEN = "[^"]*";/,'const EDIT_TOKEN = "'+newEditToken+'";');
     return doc;
   }
   function download(content,name) {
@@ -307,7 +304,7 @@ button.secondary{background:#1f2937}
     $("editFeedback").textContent="جاري تجهيز النسخة الجديدة...";
     try {
       const newBlob=await encryptPayload({message:msg,ending:end},code);
-      const updated=buildUpdatedDocument(newBlob,simpleHash(newAdmin));
+      const updated=buildUpdatedDocument(newBlob,simpleHash(newAdmin),btoa(code));
       download(updated,"final-birthday-message.html");
       $("editFeedback").textContent="تم تنزيل النسخة الجديدة. ارفعها مكان القديمة بنفس الرابط.";
     } catch(e) {
