@@ -277,7 +277,7 @@ button.secondary{background:#1f2937}
   function buildUpdatedDocument(newBlob,newAdminHash,newEditToken) {
     let doc="<!doctype html>\n"+document.documentElement.outerHTML;
     doc=doc.replace(
-      /<script id="encryptedPayload" type="application/json">[\s\S]*?</script>/,
+      /<script id="encryptedPayload" type="application\/json">[\s\S]*?<\/script>/,
       '<script id="encryptedPayload" type="application/json">'+escapeForScriptJSON(newBlob)+'</'+'script>'
     );
     doc=doc.replace(/const ADMIN_HASH = "[^"]*";/,'const ADMIN_HASH = "'+newAdminHash+'";');
