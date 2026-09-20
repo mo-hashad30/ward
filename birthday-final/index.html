@@ -1,0 +1,326 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#f7f1e5">
+<title>The Final Chapter 🔐</title>
+<style>
+:root {
+  --ink:#3c2b1d; --muted:#8a704f; --paper:#f7f1e5; --card:#fffdfa;
+  --line:#bda87f; --amber:#92400e; --amber2:#78350f; --rose:#be123c;
+  --green:#047857; --shadow:0 18px 50px rgba(85,60,20,.15);
+}
+*{box-sizing:border-box}
+html,body{min-height:100%}
+body{
+  margin:0; min-height:100vh; display:flex; align-items:center; justify-content:center;
+  padding:18px; font-family:Arial,"Noto Sans Arabic",sans-serif; color:var(--ink);
+  background-color:var(--paper);
+  background-image:radial-gradient(#d6c7a7 1px,transparent 1px);
+  background-size:20px 20px;
+}
+.card{
+  width:min(100%,460px); background:var(--card); border:2px solid var(--line);
+  border-top:8px solid var(--amber); border-radius:24px; padding:26px;
+  box-shadow:var(--shadow); text-align:center;
+}
+.page-pill{
+  display:inline-block; font-size:11px; letter-spacing:.14em; color:var(--amber);
+  background:#fef3c7; border:1px solid #f4d58a; padding:6px 12px; border-radius:999px;
+  font-weight:800;
+}
+h1{margin:12px 0 4px; font-family:Georgia,"Times New Roman",serif; font-size:29px; direction:ltr}
+.subtitle{margin:0;color:var(--muted);font-size:13px;font-weight:700;direction:ltr}
+.digits{display:flex;direction:ltr;justify-content:center;gap:12px;margin:26px 0 18px}
+.digit{
+  width:64px;height:76px;text-align:center;font-size:32px;font-weight:900;color:var(--ink);
+  background:#fffaf0;border:2px solid #d6a84b;border-radius:16px;outline:none;
+  box-shadow:inset 0 2px 5px rgba(80,50,20,.08);
+}
+.digit:focus{border-color:var(--amber);box-shadow:0 0 0 4px rgba(146,64,14,.11)}
+button{
+  width:100%; border:0;border-radius:16px;padding:14px 18px;font-size:17px;font-weight:900;
+  cursor:pointer;background:var(--amber);color:#fff7ed;box-shadow:0 8px 18px rgba(120,53,15,.18)
+}
+button:hover{background:var(--amber2)}
+button.secondary{background:#1f2937}
+.no-cheat{margin:14px 0 0;color:#a18665;font-size:11px;font-weight:900;letter-spacing:.12em;direction:ltr}
+.error{display:none;margin:0 0 14px;padding:10px 12px;border:1px solid #fecdd3;background:#fff1f2;color:var(--rose);border-radius:12px;font-size:13px;font-weight:800}
+.error.show{display:block}
+.hidden{display:none!important}
+.message-card{width:min(100%,560px);text-align:right;border-top-color:var(--green)}
+.message-head{text-align:center;border-bottom:1px solid #e8d8b9;padding-bottom:16px;margin-bottom:20px}
+.message-head .emoji{font-size:31px}
+.message-head h2{margin:7px 0 0;font-size:25px}
+.message-body{white-space:pre-wrap;line-height:1.95;font-size:17px;font-weight:500}
+.ending{margin-top:26px;padding-top:18px;border-top:1px solid #e8d8b9;text-align:center;color:var(--rose);font-size:20px;font-weight:900}
+.modal{
+  position:fixed;inset:0;background:rgba(0,0,0,.72);display:flex;align-items:center;justify-content:center;
+  padding:16px;z-index:20
+}
+.modal-box{width:min(100%,470px);max-height:92vh;overflow:auto;background:#fff;border-radius:24px;padding:24px;text-align:right}
+.modal-box h3{margin:0 0 8px}
+.note{color:#6b7280;font-size:13px;line-height:1.6}
+.field{margin-top:14px}
+.field label{display:block;font-size:12px;font-weight:800;color:#4b5563;margin-bottom:6px}
+.field input,.field textarea{
+  width:100%;border:1px solid #d1d5db;border-radius:11px;padding:11px 12px;font:inherit;outline:none;background:white
+}
+.field textarea{min-height:190px;resize:vertical;line-height:1.6}
+.field input:focus,.field textarea:focus{border-color:#b45309;box-shadow:0 0 0 3px rgba(180,83,9,.1)}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:16px}
+.feedback{margin-top:12px;font-size:12px;font-weight:800;color:var(--green)}
+@media(max-width:420px){.card{padding:22px 17px}.digit{width:58px;height:70px}.row{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<main id="userView" class="card">
+  <span class="page-pill">PAGE 4</span>
+  <h1>THE FINAL CHAPTER</h1>
+  <p class="subtitle">Enter the 3-digit key</p>
+
+  <div class="digits">
+    <input class="digit" maxlength="1" inputmode="numeric" autocomplete="one-time-code" aria-label="Digit 1">
+    <input class="digit" maxlength="1" inputmode="numeric" aria-label="Digit 2">
+    <input class="digit" maxlength="1" inputmode="numeric" aria-label="Digit 3">
+  </div>
+
+  <div id="errorMsg" class="error">مش بالسهولة دي 😏 جرّبي تاني</div>
+  <button id="unlockBtn">UNLOCK 🔐</button>
+  <p class="no-cheat">NO CHEATING 👀</p>
+</main>
+
+<section id="messageView" class="card message-card hidden">
+  <div class="message-head">
+    <div class="emoji">🎉✨</div>
+    <h2>رسالة عيد ميلادك السرية</h2>
+  </div>
+  <div id="revealedContent" class="message-body"></div>
+  <div id="revealedEnding" class="ending"></div>
+</section>
+
+<div id="editModal" class="modal hidden">
+  <div class="modal-box">
+    <div id="adminAuthStep">
+      <h3>وضع التعديل (Edit Mode)</h3>
+      <p class="note">أدخل باسورد الإدارة الحالي. الرسالة وكود اللعبة لن يظهرا إلا بعد التحقق.</p>
+      <div class="field">
+        <label>Admin Password</label>
+        <input type="password" id="adminInput" autocomplete="current-password">
+      </div>
+      <div id="adminErrorMsg" class="error">كلمة المرور غير صحيحة</div>
+      <button id="authAdminBtn" class="secondary" style="margin-top:14px">دخول للتعديل</button>
+    </div>
+
+    <div id="adminEditStep" class="hidden">
+      <h3>تعديل محتوى الصفحة</h3>
+      <p class="note">بعد التعديل نزّل الملف الجديد واستبدل الملف القديم على الاستضافة بنفس الاسم والرابط حتى يظل الـQR كما هو.</p>
+
+      <div class="field">
+        <label>كود الـ3 أرقام الجديد</label>
+        <input id="editUnlockCode" maxlength="3" inputmode="numeric" style="text-align:center;font-weight:900;font-size:20px">
+      </div>
+      <div class="field">
+        <label>الرسالة</label>
+        <textarea id="editMessageText"></textarea>
+      </div>
+      <div class="field">
+        <label>الخاتمة</label>
+        <input id="editEndingText">
+      </div>
+      <div class="field">
+        <label>Admin Password جديد — اتركه فارغًا للإبقاء على الحالي</label>
+        <input id="editAdminPass" type="password" autocomplete="new-password">
+      </div>
+      <div class="row">
+        <button id="downloadUpdatedHTML">تحميل الملف 💾</button>
+        <button id="cancelEdit" class="secondary">إغلاق</button>
+      </div>
+      <div id="editFeedback" class="feedback"></div>
+    </div>
+  </div>
+</div>
+
+<script id="encryptedPayload" type="application/json">{"v":2,"kdf":"PBKDF2-SHA256","iterations":180000,"cipher":"AES-GCM-256","salt":"0meev6rwOq0Chu2zRCYxLg==","iv":"56yiz+tK5QDctYL+","data":"E1+p1UWy6ZCra6hF26zVJJ5Fg5F0YS2mw+6t1sTd+Te65kjjtl4tmAiz2LWQXNOx1KCcIY2jZOThdsDmH6U0yQO74TCT8YJtebAE3vr9xD7ZgkYHk4LlPQSRlSrT00Cb2Up1ThdR0Vyw21ZsPxNGGu36lwaFOiDQ9ax9Yr6Upl4Mf9nP4Ck9OVR8sUYeMr4nmnMJ000zfMzOVOPArbZ7JW7l6QSNTblvsJE0b1/gXdNJ3kjqSGEQG48ekOWWcgLm3DzlwUguGI0OPnwCCdyMvLVBM9L/kKNXWcHvdSatWUEbYwaH/ZIfUCeJKH4+dOrSOaaBJfieYVJq0jNOOVbKLnj4/nMs2s8tkkznH9FMDQvfYP+0Vj7spJ/KfDYJXQXeyZCkROR5Bps4O356QptOfO4Fcj4CZWpcs6+aUMpC4xdrQ9Dk5zPP/mFSjH1Gk9L5bPD/z6pnfHhSO9WIAHjL3B5nYmpUMhvCIF3H2PH+9KJ1g5+8AQOReY0bHH5ijKdqqjH6jgUh1CuMkufLdnJxqD7JvOaPzt7p0seTFOGGgVeMo1XaFMpJFnjJ+oqcpygyLuX7IxLLr2c8+kIERo5/DReAWMfghDkGFrEK/YhroLRtdlXOS9n6/L7VTr8cdOoV/JeqWFKRr+P72tcZdNmFSfRDzESznYyB1Aq0sAcMlqekehUgO4gWbHWb+0xh5NNYvoHpdfojVhDyt4fUajZhcj5YxC2XzSJ9LZQ+VLEl/KE0IK8F4fFi4+69RRd2u9b5vJ8s4ePPq5QK+OZo8AY1a7UnL+tuLO045/LS5EwoQhN08SV1u398BVczHUMiQpR8TencJjAWgNuL6XNwQGlHLws+lRFbpyv0WBXCcSeE1hjNkuFySZ9MZKfKRpiwhTsWerDIsgEJRsKT+e7hUmDkNG+m5IWUZs/qm27i4LhZah8t9rkO9pZ40fZ6XJ/xrLmJyNZ0TaoCiskNOKENzLigL7L9LK5C4JRDp3b3vSiS6eedXV3XUc8kojzYOjn2wOdaWnFVmfgnPJ+fNbAyI/ijM7CJQKoYjYax3a1Twu4Ya50jCQetwSNuqU00x2uViJtLgZlwiEsragyRp55cgsSv5IS08e+6GmX77jr+SlDUsPDaKnPCLf7pCwW1iKKFupgPsqMkX/3CN5BNexiWkaQWRvO3z7baNaI0Skv3aKxPnEH1szuqrKNGgbyT6FS1Nd1v1EFHrXoJ5BESWAtw+3W18AXnY4YFRiIDgdLrzc1MoL8dLojre4aT4loCz5bnazw1cKM4KBCTst4xbJs0AuebOsagCy8C5fHF5ueSRH4hzze3UNB2XzGXoqeJxqchUAYcFfUmw76kCdI8qZXOymSEs1ooB+wzDg70JcrnKopm8q6N5TXXRwMIq0ib75XbROojMs6rwb8vdqgwFaPO2ACBRW+QXIvkkLuKs3H/A0mK3iaM33WKAMwyK/jNsz1Lv1vGMbB5VpC4M5/FGSbfDNMFQu4ScwG81RP9Rc4RbefSjYSDx0eu3aUzlVQQ9/srRp/uWX/0VjTX8mAoB7ECa3Yhlt+JyubilgttW0aWB+mTq3Jiknc9SQHaqsI3cbevgDzlW4T1pZcKEBwH7haVglH2HSdmUTkd33+UJlRHiLGixBh8Nvq34aWInoe/E/88wYFZwd4+FCzgflXy8D1HpK+7wcfQ1ctlw5FBk3obiqfLn7Xh7K6faSZQqGklHJ+88v5571ct+M2q0xYt4OfmevsvgoTC9KgM+cAalpwKpJM3ozU4yL86+Z7t0uIyC62UBodUd9HHpKx446vNqlpiGGmo/uYC4oi3qOKtDuh8bJ8h9gY3JvCZ3eC2FZ3ZfRM7M2h7m1HVIFcE9Jrs/BBxobfwPFvVb5YXyf3uZE0Bsl7mOpIg33iMDNLwVtztChSf16zY1aIl0sDWvxRmpR44mVWX7WQg6jnJPR3ILK7NHj7nNEHtlmKw5St4DRnbO1jJZ4R9z0dYV2n8BVB76OktqUkiajtBmvwrUaIDCvzrRCKXV2C0qPhQfSRR5WVAp88yXcSGA+1fMrfY/e3ia2peZtuQWzvofQXlpIzzBMGR3xonsna/kdkfl2TrRuKr56LOtJ3iusVCtMXUCOG14MJxLuFnEpyDlWaq4KO0iPYV8N3GYq6RfPATUo9PLDAbg5CLf4DVWZnDF46+Q5xcBLIUHAVb+lrp1ioCLQ8r/SSM+EEY8AYcA9czemtL3tajh5HMqE5viWL1iro4skRAfMugRoFpj7gH2Z+vCl0X5CRkvgjIGYAuXbXVqQ=="}</script>
+<script>
+(() => {
+  const ADMIN_HASH = "-270128518";
+  const enc = new TextEncoder(), dec = new TextDecoder();
+  const $ = id => document.getElementById(id);
+  const boxes = [...document.querySelectorAll(".digit")];
+
+  function simpleHash(str) {
+    let hash = 0;
+    for (let i=0;i<str.length;i++) {
+      hash = (hash << 5) - hash + str.charCodeAt(i);
+      hash |= 0;
+    }
+    return hash.toString();
+  }
+  function b64ToBytes(s) {
+    const b=atob(s), out=new Uint8Array(b.length);
+    for(let i=0;i<b.length;i++) out[i]=b.charCodeAt(i);
+    return out;
+  }
+  function bytesToB64(bytes) {
+    let s=""; const chunk=0x8000;
+    for(let i=0;i<bytes.length;i+=chunk) s+=String.fromCharCode(...bytes.subarray(i,i+chunk));
+    return btoa(s);
+  }
+  function randomBytes(n) {
+    const a=new Uint8Array(n); crypto.getRandomValues(a); return a;
+  }
+  async function deriveKey(secret,salt,iterations=180000) {
+    const base=await crypto.subtle.importKey("raw",enc.encode(secret),{name:"PBKDF2"},false,["deriveKey"]);
+    return crypto.subtle.deriveKey(
+      {name:"PBKDF2",salt,iterations,hash:"SHA-256"},base,
+      {name:"AES-GCM",length:256},false,["encrypt","decrypt"]
+    );
+  }
+  async function decryptPayload(blob, secret) {
+    const key=await deriveKey(secret,b64ToBytes(blob.salt),blob.iterations||180000);
+    const plain=await crypto.subtle.decrypt({name:"AES-GCM",iv:b64ToBytes(blob.iv)},key,b64ToBytes(blob.data));
+    return JSON.parse(dec.decode(plain));
+  }
+  async function encryptPayload(obj,secret) {
+    const salt=randomBytes(16), iv=randomBytes(12);
+    const key=await deriveKey(secret,salt,180000);
+    const cipher=new Uint8Array(await crypto.subtle.encrypt(
+      {name:"AES-GCM",iv},key,enc.encode(JSON.stringify(obj))
+    ));
+    return {v:2,kdf:"PBKDF2-SHA256",iterations:180000,cipher:"AES-GCM-256",
+      salt:bytesToB64(salt),iv:bytesToB64(iv),data:bytesToB64(cipher)};
+  }
+  function getBlob() {
+    return JSON.parse($("encryptedPayload").textContent);
+  }
+  function showError(el,msg) {
+    if(msg) el.textContent=msg;
+    el.classList.add("show");
+    setTimeout(()=>el.classList.remove("show"),3000);
+  }
+
+  boxes.forEach((box,idx)=>{
+    box.addEventListener("input",()=>{
+      box.value=box.value.replace(/D/g,"").slice(0,1);
+      if(box.value && idx<2) boxes[idx+1].focus();
+    });
+    box.addEventListener("keydown",e=>{
+      if(e.key==="Backspace" && !box.value && idx>0) boxes[idx-1].focus();
+      if(e.key==="Enter") $("unlockBtn").click();
+    });
+    box.addEventListener("paste",e=>{
+      const t=(e.clipboardData||window.clipboardData).getData("text").replace(/D/g,"").slice(0,3);
+      if(t) {
+        e.preventDefault();
+        [...t].forEach((ch,i)=>{if(boxes[i]) boxes[i].value=ch});
+        boxes[Math.min(t.length,3)-1].focus();
+      }
+    });
+  });
+
+  $("unlockBtn").addEventListener("click",async()=>{
+    const code=boxes.map(x=>x.value).join("");
+    if(!/^d{3}$/.test(code)) return showError($("errorMsg"));
+    try {
+      const payload=await decryptPayload(getBlob(),code);
+      $("revealedContent").textContent=payload.message||"";
+      $("revealedEnding").textContent=payload.ending||"";
+      $("userView").classList.add("hidden");
+      $("messageView").classList.remove("hidden");
+    } catch {
+      boxes.forEach(x=>x.value=""); boxes[0].focus();
+      showError($("errorMsg"));
+    }
+  });
+
+  const editMode = new URLSearchParams(location.search).get("edit")==="1" || location.hash.toLowerCase()==="#edit";
+  if(editMode) $("editModal").classList.remove("hidden");
+
+  let verifiedAdminPass="";
+  let recoveredCode="";
+  async function recoverCurrentPayload() {
+    const blob=getBlob();
+    for(let i=0;i<=999;i++) {
+      const code=String(i).padStart(3,"0");
+      try {
+        const data=await decryptPayload(blob,code);
+        return {code,data};
+      } catch {}
+    }
+    throw new Error("Unable to recover encrypted payload");
+  }
+
+  $("authAdminBtn").addEventListener("click",async()=>{
+    const pass=$("adminInput").value;
+    if(simpleHash(pass)!==ADMIN_HASH) return showError($("adminErrorMsg"));
+    verifiedAdminPass=pass;
+    $("authAdminBtn").disabled=true;
+    $("authAdminBtn").textContent="جاري فتح المحتوى...";
+    try {
+      const current=await recoverCurrentPayload();
+      recoveredCode=current.code;
+      $("editUnlockCode").value=current.code;
+      $("editMessageText").value=current.data.message||"";
+      $("editEndingText").value=current.data.ending||"";
+      $("adminAuthStep").classList.add("hidden");
+      $("adminEditStep").classList.remove("hidden");
+    } catch {
+      showError($("adminErrorMsg"),"تعذر قراءة المحتوى المشفر");
+    } finally {
+      $("authAdminBtn").disabled=false;
+      $("authAdminBtn").textContent="دخول للتعديل";
+    }
+  });
+
+  function escapeForScriptJSON(obj) {
+    return JSON.stringify(obj).replace(/</g,"\u003c");
+  }
+  function buildUpdatedDocument(newBlob,newAdminHash) {
+    let doc="<!doctype html>
+"+document.documentElement.outerHTML;
+    doc=doc.replace(
+      /<script id="encryptedPayload" type="application/json">[sS]*?</script>/,
+      '<script id="encryptedPayload" type="application/json">'+escapeForScriptJSON(newBlob)+'</'+'script>'
+    );
+    doc=doc.replace(/const ADMIN_HASH = "[^"]*";/,'const ADMIN_HASH = "'+newAdminHash+'";');
+    return doc;
+  }
+  function download(content,name) {
+    const blob=new Blob([content],{type:"text/html;charset=utf-8"});
+    const url=URL.createObjectURL(blob), a=document.createElement("a");
+    a.href=url;a.download=name;document.body.appendChild(a);a.click();a.remove();
+    setTimeout(()=>URL.revokeObjectURL(url),1200);
+  }
+
+  $("downloadUpdatedHTML").addEventListener("click",async()=>{
+    const code=$("editUnlockCode").value.trim();
+    const msg=$("editMessageText").value;
+    const end=$("editEndingText").value;
+    const newAdmin=$("editAdminPass").value || verifiedAdminPass;
+    if(!/^d{3}$/.test(code)) return alert("كود الفتح يجب أن يكون 3 أرقام بالضبط");
+    if(!msg.trim()) return alert("يرجى كتابة الرسالة");
+    if(!newAdmin) return alert("Admin Password مطلوب");
+
+    $("editFeedback").textContent="جاري تجهيز النسخة الجديدة...";
+    try {
+      const newBlob=await encryptPayload({message:msg,ending:end},code);
+      const updated=buildUpdatedDocument(newBlob,simpleHash(newAdmin));
+      download(updated,"final-birthday-message.html");
+      $("editFeedback").textContent="تم تنزيل النسخة الجديدة. ارفعها مكان القديمة بنفس الرابط.";
+    } catch(e) {
+      $("editFeedback").textContent="حصل خطأ أثناء إنشاء النسخة الجديدة.";
+    }
+  });
+
+  $("cancelEdit").addEventListener("click",()=>{
+    $("editModal").classList.add("hidden");
+  });
+
+  setTimeout(()=>boxes[0]?.focus(),100);
+})();
+</script>
+</body>
+</html>
