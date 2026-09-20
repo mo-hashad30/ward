@@ -205,7 +205,7 @@ button.secondary{background:#1f2937}
 
   boxes.forEach((box,idx)=>{
     box.addEventListener("input",()=>{
-      box.value=box.value.replace(/D/g,"").slice(0,1);
+      box.value=box.value.replace(/\D/g,"").slice(0,1);
       if(box.value && idx<2) boxes[idx+1].focus();
     });
     box.addEventListener("keydown",e=>{
@@ -213,7 +213,7 @@ button.secondary{background:#1f2937}
       if(e.key==="Enter") $("unlockBtn").click();
     });
     box.addEventListener("paste",e=>{
-      const t=(e.clipboardData||window.clipboardData).getData("text").replace(/D/g,"").slice(0,3);
+      const t=(e.clipboardData||window.clipboardData).getData("text").replace(/\D/g,"").slice(0,3);
       if(t) {
         e.preventDefault();
         [...t].forEach((ch,i)=>{if(boxes[i]) boxes[i].value=ch});
@@ -224,7 +224,7 @@ button.secondary{background:#1f2937}
 
   $("unlockBtn").addEventListener("click",async()=>{
     const code=boxes.map(x=>x.value).join("");
-    if(!/^d{3}$/.test(code)) return showError($("errorMsg"));
+    if(!/^\d{3}$/.test(code)) return showError($("errorMsg"));
     try {
       const payload=await decryptPayload(getBlob(),code);
       $("revealedContent").textContent=payload.message||"";
@@ -275,10 +275,9 @@ button.secondary{background:#1f2937}
     return JSON.stringify(obj).replace(/</g,"\u003c");
   }
   function buildUpdatedDocument(newBlob,newAdminHash,newEditToken) {
-    let doc="<!doctype html>
-"+document.documentElement.outerHTML;
+    let doc="<!doctype html>\n"+document.documentElement.outerHTML;
     doc=doc.replace(
-      /<script id="encryptedPayload" type="application/json">[sS]*?</script>/,
+      /<script id="encryptedPayload" type="application/json">[\s\S]*?</script>/,
       '<script id="encryptedPayload" type="application/json">'+escapeForScriptJSON(newBlob)+'</'+'script>'
     );
     doc=doc.replace(/const ADMIN_HASH = "[^"]*";/,'const ADMIN_HASH = "'+newAdminHash+'";');
@@ -297,7 +296,7 @@ button.secondary{background:#1f2937}
     const msg=$("editMessageText").value;
     const end=$("editEndingText").value;
     const newAdmin=$("editAdminPass").value || verifiedAdminPass;
-    if(!/^d{3}$/.test(code)) return alert("كود الفتح يجب أن يكون 3 أرقام بالضبط");
+    if(!/^\d{3}$/.test(code)) return alert("كود الفتح يجب أن يكون 3 أرقام بالضبط");
     if(!msg.trim()) return alert("يرجى كتابة الرسالة");
     if(!newAdmin) return alert("Admin Password مطلوب");
 
